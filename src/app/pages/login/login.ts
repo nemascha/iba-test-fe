@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -7,6 +7,7 @@ import { InputText } from 'primeng/inputtext';
 import { Password } from 'primeng/password';
 import { Checkbox } from 'primeng/checkbox';
 import { Button } from 'primeng/button';
+import { SpinnerService } from '../../services/spinner';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ import { Button } from 'primeng/button';
   templateUrl: './login.html',
   styleUrl: './login.scss',
   providers: [MessageService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Login implements OnInit {
   loginForm!: FormGroup;
@@ -31,6 +33,7 @@ export class Login implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private messageService: MessageService,
+    private spinnerService: SpinnerService,
   ) {}
 
   ngOnInit(): void {
@@ -78,13 +81,10 @@ export class Login implements OnInit {
     return labels[controlName] || controlName;
   }
 
-  togglePasswordVisibility(): void {
-    this.showPassword = !this.showPassword;
-  }
-
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.loading = true;
+      this.spinnerService.show();
 
       // Simulate API call
       setTimeout(() => {
@@ -94,6 +94,7 @@ export class Login implements OnInit {
           summary: 'Success',
           detail: 'Login successful!'
         });
+        this.spinnerService.hide();
 
         // Navigate to dashboard or home
         this.router.navigate(['/dashboard']);
@@ -117,9 +118,5 @@ export class Login implements OnInit {
 
   onForgotPassword(): void {
     this.router.navigate(['/forgot-password']);
-  }
-
-  onSignUp(): void {
-    this.router.navigate(['/register']);
   }
 }

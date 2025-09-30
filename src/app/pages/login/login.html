@@ -10,7 +10,9 @@
         </div>
       </div>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <form [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+            class="login-form">
         <div class="form-group">
           <p-floatlabel variant="on">
             <input
@@ -46,19 +48,7 @@
             <small class="error-message">{{ getErrorMessage('password') }}</small>
           }
         </div>
-        <div class="form-row">
-          <p-checkbox
-            formControlName="rememberMe"
-            inputId="rememberMe"
-            [binary]="true"
-            styleClass="remember-checkbox"
-          ></p-checkbox>
-          <label for="rememberMe" class="remember-label">Remember me</label>
 
-          <a class="forgot-link" (click)="onForgotPassword()">
-            Forgot password?
-          </a>
-        </div>
         <div class="login-button-wrapper">
           <p-button
             type="submit"
